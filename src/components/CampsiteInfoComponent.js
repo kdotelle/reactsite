@@ -5,20 +5,31 @@
 //create a class component and export it as default
 //use cards to display all 4 campsites
 import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 //the CampsiteInfo class is used to make the CampsiteInfo component in DirectoryComponents.js
 //class doesn't do anything w/o the Component
 
 function CampsiteInfo(props) {
-    if (props.clickedCampsite) {
-            return (
-                <div className="container">
-                <div className="row"> 
-                    <RenderCampsite campsite={props.clickedCampsite} />
-                    <RenderComments comments={props.clickedCampsite.comments} />
+    if (props.campsite) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/directory">Directory</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <h2>{props.campsite.name}</h2>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    <RenderCampsite campsite={props.campsite} />
+                    <RenderComments comments={props.comments} />
                 </div>
             </div>
-            )
+        );
         } else {
             return (
                 <div />
@@ -34,7 +45,6 @@ function RenderCampsite({campsite}) {
                 <Card>
                     <CardImg top width="100%" src={campsite.image} alt={campsite.name} />
                     <CardBody>
-                        <CardTitle>{campsite.name}</CardTitle>
                         <CardText>{campsite.description}</CardText>
                     </CardBody>
                 </Card>
