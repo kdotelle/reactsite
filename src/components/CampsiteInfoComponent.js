@@ -19,16 +19,6 @@ import {
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 
-// new class component named CommentForm that will only render a reactstrap button with the text "Submit Comment"
-// use font awesome penil icon, and reactrstrap button has a boolean attribute "outline" that can be used
-// In the RenderComments component, render the CommentForm  component to display the button
-//  In the CommentForm class component definition, construct a Reactstrap Modal that contains a React Redux
-// form for users to submit their comments
-// inside the modal set up the form as a LocalForm using react-redux-form with 3 control inputs for rating, author, text
-
-//submit comment event should activate toggleModal
-//submit inside the modal needs a event.preventDefault
-
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
@@ -79,7 +69,7 @@ class CommentForm extends React.Component {
                     required,
                   }}
                 >
-                  <option>...</option>
+                  <option selected="true" disabled>...</option>
                   <option value="1"> 1 </option>
                   <option value="2"> 2 </option>
                   <option value="3"> 3 </option>
@@ -187,8 +177,7 @@ function CampsiteInfo(props) {
     return <div />;
   }
 }
-//props has the same name as the state object
-//when the state changes that change in data is passed to the components through the props
+
 function RenderCampsite({ campsite }) {
   if (campsite) {
     return (
@@ -205,9 +194,6 @@ function RenderCampsite({ campsite }) {
     return <div />;
   }
 }
-//clickedCampsite attribute was defined in DirectorComponents
-//clickedCampsite state is being passed through as a prop
-//map calls the function for EACH element in the array and returns a new array
 function RenderComments({ comments }) {
   if (comments) {
     return (
