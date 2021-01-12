@@ -38,13 +38,9 @@ class CommentForm extends React.Component {
   };
 
   handleSubmit(values) {
-    console.log("Current state is: " + JSON.stringify(values));
-    alert("Current state is: " + JSON.stringify(values));
+    this.toggleModal();
+    this.props.addComment(this.props.campsiteId, values.rating, values.author, values.comment);
   }
-  handleClick = (event) => {
-    event.preventDefault();
-    console.log("submitted");
-  };
 
   render() {
     return (
@@ -56,7 +52,7 @@ class CommentForm extends React.Component {
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
           <ModalBody>
-            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+            <LocalForm onSubmit={values => this.handleSubmit(values)}>
               <div className="form-group">
                 <Label htmlFor="rating"> Rating </Label>
                 {/* eslint-disable-next-line react/jsx-pascal-case*/}
@@ -105,7 +101,7 @@ class CommentForm extends React.Component {
 
                 <Errors
                   className="text-danger"
-                  model=".rating"
+                  model=".author"
                   show="touched"
                   component="div"
                   messages={{
@@ -169,7 +165,11 @@ function CampsiteInfo(props) {
         </div>
         <div className="row">
           <RenderCampsite campsite={props.campsite} />
-          <RenderComments comments={props.comments} />
+          <RenderComments 
+            comments={props.comments}
+             addComment={props.addComment}
+             campsiteId={props.campsite.id}
+             />
         </div>
       </div>
     );
@@ -194,7 +194,7 @@ function RenderCampsite({ campsite }) {
     return <div />;
   }
 }
-function RenderComments({ comments }) {
+function RenderComments({comments, addComment, campsiteId}) {
   if (comments) {
     return (
       <div className="col-md-5 m-1">
@@ -216,12 +216,11 @@ function RenderComments({ comments }) {
             </ListGroup>
           );
         })}
-        <CommentForm />
+        <CommentForm campsiteId={campsiteId} addComment={addComment} />
       </div>
     );
-  } else {
+  } 
     return <div />;
-  }
 }
 
 export default CampsiteInfo;
