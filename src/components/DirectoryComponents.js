@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 //functional components always receive any data passed to them as properties of a single props argument
 function RenderDirectoryItem({campsite}) {
@@ -21,16 +22,33 @@ function Directory(props) {
 //setState updates the interface in response to an event handler
 //when a new campsite is selected the state changes to that campsite
 
-    const directory = props.campsites.map(campsite => {
+    const directory = props.campsites.campsites.map(campsite => {
         return (
             <div key={campsite.id} className="col-md-5 m-1">
                 <RenderDirectoryItem campsite={campsite} />
             </div>
         );
     });
-//this.state is what's currently on the screen
-//made the CampsiteInfo component from the CampsiteInfo class in the CampsiteInfoComponent.js file
-//Component is powered by the class
+    if (props.campsites.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    if (props.campsites.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.campsites.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container">
             <div className="row">
