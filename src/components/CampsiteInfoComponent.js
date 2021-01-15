@@ -20,6 +20,7 @@ import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -203,13 +204,19 @@ function CampsiteInfo(props) {
 function RenderCampsite({ campsite }) {
   if (campsite) {
     return (
-      <div className="row col-md-5 m-1">
-        <Card>
-          <CardImg top width="100%" src={baseUrl + campsite.image} alt={campsite.name} />
-          <CardBody>
-            <CardText>{campsite.description}</CardText>
-          </CardBody>
-        </Card>
+      <div className="col-md-5 m-1">
+        <FadeTransform 
+            in
+            transformProps={{
+              exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+          <Card>
+            <CardImg top width="100%" src={baseUrl + campsite.image} alt={campsite.name} />
+            <CardBody>
+              <CardText>{campsite.description}</CardText>
+            </CardBody>
+          </Card>
+        </FadeTransform>
       </div>
     );
   } else {
@@ -221,23 +228,27 @@ function RenderComments({comments, postComment, campsiteId}) {
     return (
       <div className="col-md-5 m-1">
         <h4> Comments</h4>
-        {comments.map((comments) => {
-          return (
-            <ListGroup>
-              <ListGroupItem key={comments.id}>
-                <ListGroupItemHeading>{comments.text}</ListGroupItemHeading>
-                <ListGroupItemText>
-                  --{comments.author},{" "}
-                  {new Intl.DateTimeFormat("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "2-digit",
-                  }).format(new Date(Date.parse(comments.date)))}
-                </ListGroupItemText>
-              </ListGroupItem>
-            </ListGroup>
-          );
-        })}
+        <Stagger in>
+          {comments.map((comments) => {
+            return (
+              <Fade in key={comments.id}>
+                <ListGroup>
+                  <ListGroupItem >
+                    <ListGroupItemHeading>{comments.text}</ListGroupItemHeading>
+                    <ListGroupItemText>
+                      --{comments.author},{" "}
+                      {new Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                      }).format(new Date(Date.parse(comments.date)))}
+                    </ListGroupItemText>
+                  </ListGroupItem>
+                </ListGroup>
+              </Fade>
+            );
+          })}
+        </Stagger>
         <CommentForm campsiteId={campsiteId} postComment={postComment} />
       </div>
     );
