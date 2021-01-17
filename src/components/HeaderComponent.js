@@ -17,6 +17,10 @@ import {
   Label
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
+import { bounceInLeft } from 'react-animations';
+import styled, { keyframes } from 'styled-components';
+
+const Bounce = styled.div`animation: 2s ${keyframes`${bounceInLeft}`}`;
 
 class Header extends Component {
   constructor(props) {
@@ -56,10 +60,10 @@ class Header extends Component {
         <Jumbotron fluid>
           <div className="container">
             <div className="row">
-              <div className="col">
+              <Bounce><div className="col">
                 <h1>NuCamp</h1>
                 <h2>a better way to camp</h2>
-              </div>
+              </div></Bounce>
             </div>
           </div>
         </Jumbotron>
